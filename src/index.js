@@ -97,10 +97,14 @@ updateFoodForm.addEventListener('submit', (event) => {
 const cryptocurrencyList = document.getElementById('cryptocurrency-list')
 
 // A GET request is made to an external API here
-fetch('https://api.coincap.io/v2/assets')
+fetch("https://api.coincap.io/v2/assets")
 .then(response => response.json())
 .then(cryptocurrencyData => {
-    cryptocurrencyData.data.slice(0, 10).forEach(cryptocurrency => {
+    const topTenCryptocurrencies = cryptocurrencyData.data.filter(cryptocurrency => {
+        const rank = Number(cryptocurrency.rank)
+        return rank <= 10
+    })
+    topTenCryptocurrencies.forEach(cryptocurrency => {
         const cryptocurrencyLI = document.createElement('li')
         cryptocurrencyLI.textContent = cryptocurrency.name
         cryptocurrencyList.appendChild(cryptocurrencyLI)
