@@ -32,3 +32,19 @@ function displayFoodDetails(food){
     const foodDescription = document.querySelector('#description-display')
     foodDescription.textContent = food.description
 }
+
+const cryptocurrencyList = document.querySelector('#cryptocurrency-list')
+
+fetch('https://api.coincap.io/v2/assets')
+.then(response => response.json())
+.then(cryptocurrencyData => {
+    const filteredCryptocurrencyData = cryptocurrencyData.data.filter(cryptocurrency => {
+        const rank = Number(cryptocurrency.rank)
+        return rank <= 10
+    })
+    filteredCryptocurrencyData.forEach(cryptocurrency => {
+        const cryptoLI = document.createElement('li')
+        cryptoLI.textContent = `${cryptocurrency.rank}: ${cryptocurrency.name} (${cryptocurrency.symbol})`
+        cryptocurrencyList.appendChild(cryptoLI)
+    })
+})
