@@ -1,3 +1,5 @@
+const cryptocurrencyList = document.getElementById('cryptocurrency-list')
+
 fetch("http://localhost:3000/foods")
 .then(response => response.json())
 .then(foods => {
@@ -32,3 +34,26 @@ function displayFoodDetails(food){
     const foodDescription = document.querySelector('#description-display')
     foodDescription.textContent = food.description
 }
+
+fetch('https://api.coincap.io/v2/assets')
+.then(response => response.json())
+.then(cryptocurrencyData => {
+
+    const filteredCryptocurrencies = cryptocurrencyData.data.filter((cryptocurrency, index) => {
+        if(Number(cryptocurrency.rank) <= 10){
+            return true
+        }
+        // if(index < 10){
+        //     return true
+        // }
+        else{
+            return false
+        }
+    })
+
+    filteredCryptocurrencies.forEach(cryptocurrency => {
+        const liElement = document.createElement('li')
+        liElement.textContent = `${cryptocurrency.name} (${cryptocurrency.symbol}): Rank ${cryptocurrency.rank}`
+        cryptocurrencyList.appendChild(liElement)
+    })
+})
